@@ -43,6 +43,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeDarkCard = ({ isLoading }) => {
     const theme = useTheme();
+    const Weight = JSON.parse(localStorage.getItem('Peso'));
 
     return (
         <>
@@ -74,12 +75,12 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            $203k
+                                            {Weight} kg
                                         </Typography>
                                     }
                                     secondary={
                                         <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            Total Income
+                                            Peso Atual
                                         </Typography>
                                     }
                                 />

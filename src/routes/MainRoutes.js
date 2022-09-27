@@ -8,14 +8,15 @@ import Loadable from 'ui-component/Loadable';
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 
 // utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
+
+const Medidas = Loadable(lazy(() => import('views/utilities/Medidas')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
 const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const NovoAlimento = Loadable(lazy(() => import('views/AdicionarAlimento')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -32,8 +33,8 @@ const MainRoutes = {
             element: <DashboardDefault />
         },
         {
-            path: '/utils/util-typography',
-            element: <UtilsTypography />
+            path: '/usuario/medidas',
+            element: <Medidas />
         },
         {
             path: '/utils/util-color',
@@ -52,8 +53,8 @@ const MainRoutes = {
             element: <UtilsMaterialIcons />
         },
         {
-            path: '/sample-page',
-            element: <SamplePage />
+            path: '/usuario/novo-alimento',
+            element: <NovoAlimento />
         }
     ]
 };

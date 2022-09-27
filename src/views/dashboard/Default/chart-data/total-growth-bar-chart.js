@@ -34,7 +34,7 @@ const chartData = {
         },
         xaxis: {
             type: 'category',
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: ['Proteina', 'Carboidrato', 'Gordura sat', 'Calcio', 'Ferro', 'Açucar', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         legend: {
             show: true,
