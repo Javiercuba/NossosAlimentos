@@ -44,7 +44,7 @@ function a11yProps(index) {
 const PopularCard = ({ isLoading }) => {
     const [value, setValue] = React.useState(0);
     const [nutrientes, setNutrientes] = useState([{}]);
-    const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', '');
+    const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', []);
     const [listConsumida, setlistConsumida] = useState([{}]);
 
     useEffect(() => {
@@ -53,6 +53,7 @@ const PopularCard = ({ isLoading }) => {
             setNutrientes(response);
         });
     }, []);
+
     // Condicional caso não tenha nenhum alimento
     function passToJSON() {
         setlistConsumida(nutrientesSelecionados ? nutrientesSelecionados.map((x) => x[0]) : [{}]);
@@ -61,7 +62,8 @@ const PopularCard = ({ isLoading }) => {
     const novoAlimento = (name) => {
         try {
             setNutrientesSelecionados([...nutrientesSelecionados, name]);
-            passToJSON();
+            setlistConsumida(nutrientesSelecionados);
+            // passToJSON();
         } catch (error) {
             alert('Erro ao inserir alimento');
         }
@@ -74,18 +76,17 @@ const PopularCard = ({ isLoading }) => {
         try {
             let aux = [{}];
             aux = listConsumida.filter((data) => data.Nome !== Alimento.Nome);
+            // setNutrientesSelecionados(aux);
             setlistConsumida(aux);
-            // setNutrientesSelecionados(listConsumida.filter((data) => data.Nome !== Alimento.Nome));
             console.log(aux);
-            setNutrientesSelecionados(aux);
         } catch (error) {
             alert('Erro ao remover alimento');
         }
-        passToJSON();
+        // passToJSON();
         // console.log(nutrientesSelecionados.filter((data) => data.Nome !== Alimento.Nome));
     };
 
-    const users = JSON.parse(localStorage.getItem('Consumido') || '[]');
+    const users = localStorage.getItem('Consumido');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -117,8 +118,8 @@ const PopularCard = ({ isLoading }) => {
                                                 <Grid item>
                                                     <Grid container alignItems="center" justifyContent="space-between">
                                                         <Grid item>
-                                                            <Typography variant="subtitle1" color="inherit">
-                                                                {Nome}
+                                                            <Typography variant="subtitle1" color="inherit" key={value.Nome}>
+                                                                {value.Nome}
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item>
