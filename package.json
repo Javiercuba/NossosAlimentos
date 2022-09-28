@@ -1,8 +1,7 @@
 {
-    "name": "berry-material-react-free",
+    "name": "nossos-alimentos-2022",
     "version": "3.0.0",
     "private": true,
-    "homepage": "https://berrydashboard.io/free",
     "dependencies": {
         "@emotion/cache": "^11.4.0",
         "@emotion/react": "^11.4.0",

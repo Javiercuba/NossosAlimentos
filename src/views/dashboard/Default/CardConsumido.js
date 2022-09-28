@@ -5,7 +5,7 @@ import useLocalStorage from 'BD/useLocalStorage';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Button, CardContent, Divider, Grid, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -85,8 +85,6 @@ const PopularCard = ({ isLoading }) => {
         // passToJSON();
         // console.log(nutrientesSelecionados.filter((data) => data.Nome !== Alimento.Nome));
     };
-
-    const users = localStorage.getItem('Consumido');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
