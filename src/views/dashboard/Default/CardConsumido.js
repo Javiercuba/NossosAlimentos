@@ -14,6 +14,7 @@ import axios from 'axios';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
+import { ConsoleView } from 'react-device-detect';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 function TabPanel(props) {
@@ -45,7 +46,6 @@ const PopularCard = ({ isLoading }) => {
     const [value, setValue] = React.useState(0);
     const [nutrientes, setNutrientes] = useState([{}]);
     const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', []);
-    const [listConsumida, setlistConsumida] = useState([{}]);
 
     useEffect(() => {
         axios.get(`https://javiercuba.github.io/NutrientesTeste/nutrientes.JSON`).then((res) => {
@@ -54,45 +54,28 @@ const PopularCard = ({ isLoading }) => {
         });
     }, []);
 
-    // Condicional caso não tenha nenhum alimento
-    function passToJSON() {
-        setlistConsumida(nutrientesSelecionados ? nutrientesSelecionados.map((x) => x[0]) : [{}]);
-    }
-
     const novoAlimento = (name) => {
         try {
             setNutrientesSelecionados([...nutrientesSelecionados, name]);
-            setlistConsumida(nutrientesSelecionados);
-            // passToJSON();
         } catch (error) {
             alert('Erro ao inserir alimento');
         }
-
-        // setTeste(nutrientesSelecionados);
-        // console.log([nutrientesSelecionados]);
     };
 
     const removeAlimento = (Alimento) => {
         try {
-            let aux = [{}];
-            aux = listConsumida.filter((data) => data.Nome !== Alimento.Nome);
-            // setNutrientesSelecionados(aux);
-            setlistConsumida(aux);
-            console.log(aux);
+            let aux = [];
+            aux = nutrientesSelecionados.filter((data) => data[0].Nome !== Alimento[0].Nome);
+            setNutrientesSelecionados(aux);
         } catch (error) {
             alert('Erro ao remover alimento');
         }
-        // passToJSON();
-        // console.log(nutrientesSelecionados.filter((data) => data.Nome !== Alimento.Nome));
     };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    // Area de teste
-
-    // acaba aqui ............
     return (
         <>
             {isLoading ? (
@@ -108,24 +91,20 @@ const PopularCard = ({ isLoading }) => {
                     <TabPanel value={value} index={0}>
                         <CardContent>
                             <Grid container spacing={gridSpacing}>
-                                {listConsumida.map((value, key) => {
-                                    const { Nome } = value;
-                                    return (
-                                        <Grid item xs={12} key={key}>
+                                {nutrientesSelecionados.length ? (
+                                    nutrientesSelecionados.map((value) => (
+                                        <Grid item xs={12}>
                                             <Grid container direction="column">
                                                 <Grid item>
                                                     <Grid container alignItems="center" justifyContent="space-between">
                                                         <Grid item>
-                                                            <Typography variant="subtitle1" color="inherit" key={value.Nome}>
-                                                                {value.Nome}
+                                                            <Typography variant="subtitle1" color="inherit">
+                                                                {value[0].Nome}
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item>
                                                             <Grid container alignItems="center" justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Button variant="subtitle2" color="inherit">
-                                                                        Editar
-                                                                    </Button>
                                                                     <Button
                                                                         variant="subtitle2"
                                                                         color="inherit"
@@ -140,17 +119,22 @@ const PopularCard = ({ isLoading }) => {
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography variant="subtitle2" sx={{ color: 'success' }}>
-                                                        Proteina {value.Proteina} mg
+                                                        Proteina {value[0].Proteina} mg
                                                     </Typography>
                                                     <Typography variant="subtitle2" sx={{ color: 'success' }}>
-                                                        Carboidratos {value.Carboidrato} mg
+                                                        Carboidratos {value[0].Carboidrato} mg
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Divider sx={{ my: 1.5 }} />
                                         </Grid>
-                                    );
-                                })}
+                                    ))
+                                ) : (
+                                    <div>
+                                        <Typography variant="alignCenter" fontSize="16px">
+                                            Adicione um Alimento
+                                        </Typography>
+                                    </div>
+                                )}
                             </Grid>
                         </CardContent>
                     </TabPanel>
