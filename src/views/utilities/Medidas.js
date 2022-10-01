@@ -2,7 +2,7 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable default-case */
 import { Grid, Link, TextField, Divider, Box, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
-import MuiTypography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import React, { useState, useEffect } from 'react';
 // project imports
 import SubCard from 'ui-component/cards/SubCard';
@@ -11,6 +11,11 @@ import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import { Form } from 'semantic-ui-react';
 import useLocalStorage from 'BD/useLocalStorage';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import CardMedia from '@mui/material/CardMedia';
 
 const Medidas = () => {
     const [age, setAge] = useLocalStorage('Idade', '');
@@ -92,6 +97,20 @@ const Medidas = () => {
 
     return (
         <div>
+            <Box sx={{ p: 2.25 }}>
+                <Grid direction="column">
+                    <Grid item sx={{ mb: 0.75 }}>
+                        <Grid container alignItems="center">
+                            <Grid item xs={4}>
+                                <Typography sx={{ fontSize: '1.525rem', fontWeight: 600, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                    Cadastro de informações
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Box>
+
             <Grid container spacing={gridSpacing}>
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                     <FormControl fullWidth>
@@ -190,6 +209,7 @@ const Medidas = () => {
                 <Grid item xs={12}>
                     <FormControl fullWidth>
                         <Button
+                            href="/"
                             variant="contained"
                             onClick={() => {
                                 if (ValidEntry()) {

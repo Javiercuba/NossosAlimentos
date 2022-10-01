@@ -60,16 +60,6 @@ const EarningCard = ({ isLoading }) => {
     const theme = useTheme();
     const IMC = JSON.parse(localStorage.getItem('IMC'));
 
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     return (
         <>
             {isLoading ? (
