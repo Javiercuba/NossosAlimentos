@@ -16,27 +16,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // chart data
-import chartData from './chart-data/total-growth-bar-chart';
-
-const status = [
-    {
-        value: 'today',
-        label: 'Today'
-    },
-    {
-        value: 'month',
-        label: 'This Month'
-    },
-    {
-        value: 'year',
-        label: 'This Year'
-    }
-];
+import NewChar from './chart-data/NewChart';
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 const TotalGrowthBarChart = ({ isLoading }) => {
-    const [value, setValue] = useState('today');
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
 
@@ -53,7 +37,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
 
     useEffect(() => {
         const newChartData = {
-            ...chartData.options,
+            ...NewChar.options,
             colors: [primary200, primaryDark, secondaryMain, secondaryLight],
             xaxis: {
                 labels: {
@@ -96,7 +80,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                 <MainCard>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <Chart {...chartData} />
+                            <NewChar />
                         </Grid>
                     </Grid>
                 </MainCard>
