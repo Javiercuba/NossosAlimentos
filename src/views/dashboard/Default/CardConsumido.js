@@ -11,10 +11,12 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import axios from 'axios';
 // project imports
+import ApexCharts from 'apexcharts';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 import { ConsoleView } from 'react-device-detect';
+import NewChar from './chart-data/NewChart';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 function TabPanel(props) {
@@ -46,6 +48,8 @@ const PopularCard = ({ isLoading }) => {
     const [value, setValue] = React.useState(0);
     const [nutrientes, setNutrientes] = useState([{}]);
     const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', []);
+    const valoresSomados = [0, 0, 0, 0, 0, 0];
+    const categorias = ['Proteina', 'Energia', 'Carboidrato', 'Gord Total', 'Fibras', 'Energia'];
 
     useEffect(() => {
         axios.get(`https://javiercuba.github.io/NutrientesTeste/nutrientes.JSON`).then((res) => {
@@ -53,13 +57,53 @@ const PopularCard = ({ isLoading }) => {
             setNutrientes(response);
         });
     }, []);
+    nutrientesSelecionados.forEach((alimento) => {
+        console.log(alimento[0].Proteina);
+        valoresSomados[0] += alimento[0].Proteina;
+        valoresSomados[1] += alimento[0].Energia;
+        valoresSomados[2] += alimento[0].Carboidrato;
+        valoresSomados[3] += alimento[0].GordTotal;
+        valoresSomados[4] += alimento[0].Fibras;
+        valoresSomados[5] += alimento[0].Energia;
+    });
+    function atualizarValores() {
+        nutrientesSelecionados.forEach((alimento) => {
+            console.log(alimento[0].Proteina);
+            valoresSomados[0] += alimento[0].Proteina;
+            valoresSomados[1] += alimento[0].Energia;
+            valoresSomados[2] += alimento[0].Carboidrato;
+            valoresSomados[3] += alimento[0].GordTotal;
+            valoresSomados[4] += alimento[0].Fibras;
+            valoresSomados[5] += alimento[0].Energia;
+        });
 
+        console.log(valoresSomados);
+        ApexCharts.exec(
+            'bar-chart',
+            'updateSeries',
+            [
+                {
+                    name: 'Ingerido',
+                    data: valoresSomados
+                },
+                {
+                    name: 'Sugerido',
+                    data: [135, 15, 15, 35, 65, 40]
+                }
+            ],
+            true
+        );
+    }
+
+    // const chart = new ApexCharts(`bar-chart`, 'updateSeries');
     const novoAlimento = (name) => {
         try {
             setNutrientesSelecionados([...nutrientesSelecionados, name]);
+            // ApexCharts.exec(`bar-chart`, 'updateSeries');
         } catch (error) {
             alert('Erro ao inserir alimento');
         }
+        atualizarValores();
     };
 
     const removeAlimento = (Alimento) => {
@@ -70,6 +114,7 @@ const PopularCard = ({ isLoading }) => {
         } catch (error) {
             alert('Erro ao remover alimento');
         }
+        atualizarValores();
     };
 
     const handleChange = (event, newValue) => {
