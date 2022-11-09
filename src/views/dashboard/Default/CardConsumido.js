@@ -15,8 +15,6 @@ import ApexCharts from 'apexcharts';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
-import { ConsoleView } from 'react-device-detect';
-import NewChar from './chart-data/NewChart';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 function TabPanel(props) {
@@ -57,6 +55,28 @@ const PopularCard = ({ isLoading }) => {
             setNutrientes(response);
         });
     }, []);
+
+    // const chart = new ApexCharts(`bar-chart`, 'updateSeries');
+    const novoAlimento = (name) => {
+        try {
+            setNutrientesSelecionados([...nutrientesSelecionados, name]);
+        } catch (error) {
+            alert('Erro ao inserir alimento');
+        }
+    };
+    console.log(nutrientesSelecionados);
+
+    const removeAlimento = (Alimento) => {
+        try {
+            let aux = [];
+            aux = nutrientesSelecionados.filter((data) => data[0].Nome !== Alimento[0].Nome);
+            setNutrientesSelecionados(aux);
+        } catch (error) {
+            alert('Erro ao remover alimento');
+        }
+    };
+    // Isso tem que estar no final
+
     nutrientesSelecionados.forEach((alimento) => {
         console.log(alimento[0].Proteina);
         valoresSomados[0] += alimento[0].Proteina;
@@ -66,18 +86,8 @@ const PopularCard = ({ isLoading }) => {
         valoresSomados[4] += alimento[0].Fibras;
         valoresSomados[5] += alimento[0].Energia;
     });
-    function atualizarValores() {
-        nutrientesSelecionados.forEach((alimento) => {
-            console.log(alimento[0].Proteina);
-            valoresSomados[0] += alimento[0].Proteina;
-            valoresSomados[1] += alimento[0].Energia;
-            valoresSomados[2] += alimento[0].Carboidrato;
-            valoresSomados[3] += alimento[0].GordTotal;
-            valoresSomados[4] += alimento[0].Fibras;
-            valoresSomados[5] += alimento[0].Energia;
-        });
 
-        console.log(valoresSomados);
+    useEffect(() => {
         ApexCharts.exec(
             'bar-chart',
             'updateSeries',
@@ -91,32 +101,10 @@ const PopularCard = ({ isLoading }) => {
                     data: [135, 15, 15, 35, 65, 40]
                 }
             ],
+            true,
             true
         );
-    }
-
-    // const chart = new ApexCharts(`bar-chart`, 'updateSeries');
-    const novoAlimento = (name) => {
-        try {
-            setNutrientesSelecionados([...nutrientesSelecionados, name]);
-            // ApexCharts.exec(`bar-chart`, 'updateSeries');
-        } catch (error) {
-            alert('Erro ao inserir alimento');
-        }
-        atualizarValores();
-    };
-
-    const removeAlimento = (Alimento) => {
-        try {
-            let aux = [];
-            aux = nutrientesSelecionados.filter((data) => data[0].Nome !== Alimento[0].Nome);
-            setNutrientesSelecionados(aux);
-        } catch (error) {
-            alert('Erro ao remover alimento');
-        }
-        atualizarValores();
-    };
-
+    }, [valoresSomados]);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -153,7 +141,9 @@ const PopularCard = ({ isLoading }) => {
                                                                     <Button
                                                                         variant="subtitle2"
                                                                         color="inherit"
-                                                                        onClick={() => removeAlimento(value)}
+                                                                        onClick={() => {
+                                                                            removeAlimento(value);
+                                                                        }}
                                                                     >
                                                                         Remover
                                                                     </Button>
@@ -189,7 +179,6 @@ const PopularCard = ({ isLoading }) => {
                             options={nutrientes.map((option) => option.Nome)}
                             renderInput={(params) => <TextField {...params} label="Escolha um alimento" />}
                             onChange={(e, value) => {
-                                // modificar isso daqui pra salvar no local storage
                                 if (value != null) {
                                     const alimento = nutrientes.filter((alimento) => alimento.Nome === value);
 
