@@ -47,7 +47,7 @@ const PopularCard = ({ isLoading }) => {
     const [nutrientes, setNutrientes] = useState([{}]);
     const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', []);
     const valoresSomados = [0, 0, 0, 0, 0, 0];
-
+    const auxFloat = [0, 0, 0, 0, 0, 0];
     useEffect(() => {
         axios.get(`https://javiercuba.github.io/NutrientesTeste/nutrientes.JSON`).then((res) => {
             const response = res.data;
@@ -56,13 +56,15 @@ const PopularCard = ({ isLoading }) => {
     }, []);
     const atualizaAlimentos = () => {
         nutrientesSelecionados.forEach((alimento) => {
-            console.log(alimento[0].Proteina);
             valoresSomados[0] += alimento[0].Proteina;
             valoresSomados[1] += alimento[0].Energia;
             valoresSomados[2] += alimento[0].Carboidrato;
             valoresSomados[3] += alimento[0].GordTotal;
             valoresSomados[4] += alimento[0].Fibras;
             valoresSomados[5] += alimento[0].Energia;
+        });
+        valoresSomados.forEach((value, index) => {
+            auxFloat[index] = Number(valoresSomados[index]).toFixed(0);
         });
 
         ApexCharts.exec(
@@ -71,7 +73,7 @@ const PopularCard = ({ isLoading }) => {
             [
                 {
                     name: 'Ingerido',
-                    data: valoresSomados
+                    data: auxFloat
                 },
                 {
                     name: 'Sugerido',
@@ -82,6 +84,7 @@ const PopularCard = ({ isLoading }) => {
             true
         );
     };
+
     // const chart = new ApexCharts(`bar-chart`, 'updateSeries');
     const novoAlimento = (name) => {
         try {
