@@ -59,17 +59,6 @@ const Medidas = () => {
         return Math.round(bmr);
     };
 
-    const person = {
-        Nome: name,
-        Idade: age,
-        Genero: gender,
-        Peso: weight,
-        Altura: height,
-        Atividade: activity,
-        Calorias: calories,
-        Imc: IMC
-    };
-
     const ValidEntry = () => {
         const fields = [gender, age, weight, height, activity];
         let i;

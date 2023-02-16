@@ -48,6 +48,9 @@ const PopularCard = ({ isLoading }) => {
     const [nutrientesSelecionados, setNutrientesSelecionados] = useLocalStorage('Consumido', []);
     const valoresSomados = [0, 0, 0, 0, 0, 0];
     const auxFloat = [0, 0, 0, 0, 0, 0];
+    // Varivel que recebe as calorias consumidas
+    const helper = JSON.parse(localStorage.getItem('Calorias'));
+    const Peso = JSON.parse(localStorage.getItem('Peso'));
     useEffect(() => {
         axios.get(`https://javiercuba.github.io/NutrientesTeste/nutrientes.JSON`).then((res) => {
             const response = res.data;
@@ -61,12 +64,23 @@ const PopularCard = ({ isLoading }) => {
             valoresSomados[2] += alimento[0].Carboidrato;
             valoresSomados[3] += alimento[0].GordTotal;
             valoresSomados[4] += alimento[0].Fibras;
-            valoresSomados[5] += alimento[0].Energia;
+            valoresSomados[5] += alimento[0].Calcio;
         });
         valoresSomados.forEach((value, index) => {
             auxFloat[index] = Number(valoresSomados[index]).toFixed(0);
         });
 
+        /*
+        Inserção dos valores no grafico
+        */
+        auxFloat[0] = ((auxFloat[0] / Peso) * 100).toFixed(1); // Proteina OK
+        auxFloat[1] = ((auxFloat[1] / helper) * 100).toFixed(1); // Energia OK
+        auxFloat[2] = ((((auxFloat[2] / helper) * 0.6) / 4) * 100).toFixed(1); // Carboidrato OK
+        auxFloat[3] = ((auxFloat[3] / (helper - valoresSomados[0] * 4 - valoresSomados[2] * 4) / 9) * 100).toFixed(1); // GordTotal OK
+        auxFloat[4] = ((25 / helper) * 100).toFixed(1); // Fibras OK
+        auxFloat[5] = ((1000 / helper) * 100).toFixed(1); // Calcio OK
+
+        console.log(auxFloat[3]);
         ApexCharts.exec(
             'bar-chart',
             'updateSeries',
@@ -74,10 +88,6 @@ const PopularCard = ({ isLoading }) => {
                 {
                     name: 'Ingerido',
                     data: auxFloat
-                },
-                {
-                    name: 'Sugerido',
-                    data: [135, 15, 15, 35, 65, 40]
                 }
             ],
             true,
@@ -162,7 +172,7 @@ const PopularCard = ({ isLoading }) => {
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography variant="subtitle2" sx={{ color: 'success' }}>
-                                                        Proteina {value[0].Proteina} mg
+                                                        Proteina {value[0].Proteina} kcal
                                                     </Typography>
                                                     <Typography variant="subtitle2" sx={{ color: 'success' }}>
                                                         Carboidratos {value[0].Carboidrato} mg

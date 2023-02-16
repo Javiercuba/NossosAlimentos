@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
 export default function NewChar() {
-    const categorias = ['Proteina', 'Energia', 'Carboidrato', 'Gord Total', 'Fibras', 'Energia'];
+    const categorias = ['Proteina', 'Energia', 'Carboidrato', 'Gord Total', 'Fibras', 'Cálcio'];
     const valoresSomados = [0, 0, 0, 0, 0, 0];
 
     const chartData = {
@@ -12,6 +12,7 @@ export default function NewChar() {
             chart: {
                 id: 'bar-chart',
                 stacked: false,
+                stackType: '100%',
                 toolbar: {
                     show: true
                 },
@@ -42,7 +43,28 @@ export default function NewChar() {
             },
             xaxis: {
                 type: 'category',
-                categories: categorias
+                categories: categorias,
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                }
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                labels: {
+                    show: false,
+                    formatter(val) {
+                        // eslint-disable-next-line prefer-template
+                        return val + '%';
+                    }
+                }
             },
             legend: {
                 show: true,
@@ -67,21 +89,29 @@ export default function NewChar() {
                 type: 'solid'
             },
             dataLabels: {
-                enabled: false
+                enabled: true,
+                formatter(val) {
+                    // eslint-disable-next-line prefer-template
+                    return val + '%';
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ['#304758']
+                }
             },
             grid: {
                 show: true
             }
         },
 
+        /*
+        Os valores que serão inseridos dentro desse grafico essa no arquivo "CardConsumido.js"
+        */
         series: [
             {
                 name: 'Ingerido',
                 data: valoresSomados
-            },
-            {
-                name: 'Sugerido',
-                data: [135, 15, 15, 35, 65, 40]
             }
         ]
     };
